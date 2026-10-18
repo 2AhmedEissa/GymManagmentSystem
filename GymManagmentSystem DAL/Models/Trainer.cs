@@ -2,7 +2,7 @@
 
 namespace GymManagmentSystem_DAL.Models
 {
-    public class Trainer
+    public class Trainer : User
     {
         public Specialties Specialty { get; set; }
     }

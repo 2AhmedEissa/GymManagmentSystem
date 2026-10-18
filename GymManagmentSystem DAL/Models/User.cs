@@ -16,7 +16,5 @@ namespace GymManagmentSystem_DAL.Models
 
         public Address Address { get; set; } = null!;
 
-        public DateTime JoinDate { get; set; }
-
     }
 }

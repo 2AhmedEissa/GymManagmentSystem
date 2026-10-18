@@ -19,7 +19,7 @@ namespace GymManagmentSystem.Configurations
                 .HasPrecision(10, 2);
 
             builder.Property(X => X.CreatedAt)
-                   .HasDefaultValueSql("GETDATE()");
+                   .HasDefaultValueSql("GetDate()");
 
             builder.ToTable(Tb =>
             {
