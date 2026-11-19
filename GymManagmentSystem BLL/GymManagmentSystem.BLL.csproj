@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GymManagmentSystem DAL\GymManagmentSystem.DAL.csproj" />
   </ItemGroup>
 
