@@ -32,7 +32,7 @@ namespace GymManagmentSystem_DAL.Repositories.Classes
             return repo;
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken ct)
+        public async Task<int> SaveChangesAsync(CancellationToken ct = default)
         {
             return await _dbContext.SaveChangesAsync(ct);
         }

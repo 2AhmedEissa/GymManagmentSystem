@@ -29,18 +29,18 @@ namespace GymManagmentSystem_DAL.Repositories.Classes
             var entity = await _dbSet.FindAsync([id], ct);
             return entity;
         }
-        public async void AddAsync(T entity)
+        public void AddAsync(T entity)
         {
             _dbSet.Add(entity);
         }
 
-        public async void DeleteAsync(T entity)
+        public void DeleteAsync(T entity)
         {
             _dbSet.Remove(entity);
         }
 
 
-        public async void UpdateAsync(T entity)
+        public void UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
         }
