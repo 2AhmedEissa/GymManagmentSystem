@@ -4,7 +4,7 @@ namespace GymManagmentSystem_DAL.Data.Models
 {
     public class Trainer : User
     {
-        public Specialties Specialties { get; set; }
+        public Specialties Specialization { get; set; }
 
         #region Relationships
 

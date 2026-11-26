@@ -21,7 +21,12 @@ namespace GymManagmentSystem
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
             });
             builder.Services.AddScoped<IMemberService, MemberService>();
-
+            builder.Services.AddScoped<IPlanService, PlanService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile).Assembly);
 
 
 

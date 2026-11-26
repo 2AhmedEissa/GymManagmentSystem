@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,19 +14,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
           rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
-    <!-- ^ Bootstrap 5.3.8 css file -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
-    <!-- ^ Our main css file -->
+    <!-- Main CSS -->
     <link rel="stylesheet" href="~/css/style.css" />
     <title>Power fitness | @ViewBag.Title</title>
 </head>
+
 <body>
     <header>
-        <!-- ^ navbar -->
         <nav class="navbar navbar-expand-lg bg-white my-3">
             <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img src="./images/logo.jpg" alt="" />
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.jpg" alt="Power Fitness" />
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,56 +36,89 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav m-auto mb-2 mb-lg-0 mt-3 mt-lg-0">
                         <li class="nav-item">
-                            <li class="nav-item">
-                                <a class="nav-link active px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-controller="Members" asp-action="Index">Members</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Trainers</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Sessions</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-controller="Plans" asp-action="Index">Plans</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Memberships</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Sessions Schedule</a>
-                            </li>
-                            <li class="nav-item">
-                                <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
-                                    <button type="submit"
-                                            class="btn btn-link nav-link px-3 py-2 mx-2 fw-bolder fs-5 text-black-alternative">
-                                        Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+                            <a class="nav-link @(currentController == "Home" ? "active" : "") px-3 py-2 mx-2 fw-bolder fs-5"
+                               aria-current="@(currentController == "Home" ? "page" : null)"
+                               asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Member" ? "active" : "") px-3 py-2 mx-2 fw-bolder fs-5"
+                               aria-current="@(currentController == "Member" ? "page" : null)"
+                               asp-controller="Member" asp-action="Index">Members</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Trainer" ? "active" : "") px-3 py-2 mx-2 fw-bolder fs-5"
+                               aria-current="@(currentController == "Trainer" ? "page" : null)"
+                               asp-controller="Trainer" asp-action="Index">Trainers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Session" ? "active" : "") px-3 py-2 mx-2 fw-bolder fs-5"
+                               aria-current="@(currentController == "Session" ? "page" : null)"
+                               asp-controller="Session" asp-action="Index">Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Plan" ? "active" : "") px-3 py-2 mx-2 fw-bolder fs-5"
+                               aria-current="@(currentController == "Plan" ? "page" : null)"
+                               asp-controller="Plan" asp-action="Index">Plans</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Membership" ? "active" : "") px-3 py-2 mx-2 fw-bolder fs-5"
+                               aria-current="@(currentController == "Membership" ? "page" : null)"
+                               asp-controller="Membership" asp-action="Index">Memberships</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "SessionsSchedule" ? "active" : "") px-3 py-2 mx-2 fw-bolder fs-5"
+                               aria-current="@(currentController == "SessionsSchedule" ? "page" : null)"
+                               href="#">Sessions Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
+                                <button type="submit"
+                                        class="btn btn-link nav-link px-3 py-2 mx-2 fw-bolder fs-5 text-black-alternative">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
-
-        </header>
-        <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
-
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2026 - GymManagmentSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
-        </footer>
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        @RenderSection("Scripts", required: false)
-        @RenderSection("ValidationScripts", required: false)
-    </body>
+        </nav>
+    </header>
+
+    
+    <div class="container">
+        @* @if (TempData["SuccessMessage"] is not null)
+        {
+            <div id="Alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (TempData["ErrorMessage"] is not null)
+        {
+            <div id="Alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        } *@
+
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - GymManagmentSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("ValidationScripts", required: false)
+</body>
+
 </html>
