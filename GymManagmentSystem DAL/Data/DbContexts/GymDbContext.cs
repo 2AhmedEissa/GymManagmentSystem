@@ -20,6 +20,29 @@ namespace GymManagmentSystem_DAL.Data.DbContexts
         {
             //modelBuilder.ApplyConfiguration(new PlanConfiguration());
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType) && !entityType.IsOwned())
+                {
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Property(nameof(BaseEntity.CreatedAt))
+                        .HasDefaultValueSql("GETDATE()");
+                }
+            }
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+            {
+                if (entry.State == EntityState.Added && entry.Entity.CreatedAt == default)
+                {
+                    entry.Entity.CreatedAt = DateTime.Now;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<Category> Categories { get; set; }

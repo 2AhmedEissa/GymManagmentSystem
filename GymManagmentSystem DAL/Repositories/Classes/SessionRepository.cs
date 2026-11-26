@@ -19,18 +19,20 @@ namespace GymManagmentSystem_DAL.Repositories.Classes
                 .AsNoTracking()
                 .Include(s => s.Category)
                 .Include(s => s.Trainer)
+                .Include(s => s.Bookings)
                 .ToListAsync(ct);
 
             return sessions;
         }
 
-        public async Task<Session?> GetSessionWithTrainerAndCategoryAsync(int sessionId, CancellationToken ct = default)
+        public async Task<Session?> GetSessionWithDetailsAsync(int id, CancellationToken ct = default)
         {
             return await _dbContext.Sessions
                 .AsNoTracking()
                 .Include(s => s.Category)
                 .Include(s => s.Trainer)
-                .FirstOrDefaultAsync(s => s.Id == sessionId, ct);
+                .Include(s => s.Bookings)
+                .FirstOrDefaultAsync(s => s.Id == id, ct);
         }
 
         public async Task<int> GetCountOfBookeSlotsAsync(int sessionId, CancellationToken ct = default)

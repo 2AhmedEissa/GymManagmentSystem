@@ -15,9 +15,13 @@ namespace GymManagmentSystem_BLL.Services.Classes
             // Session mappings
             CreateMap<Session, SessionViewModel>()
                 .ForMember(dest => dest.TrainerName, opt => opt.MapFrom(src => src.Trainer != null ? src.Trainer.Name : string.Empty))
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : string.Empty));
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : string.Empty))
+                .ForMember(dest => dest.AvailableSlots, opt => opt.MapFrom(src => src.Capacity - (src.Bookings != null ? src.Bookings.Count : 0)));
             CreateMap<CreateSessionViewModel, Session>();
+            CreateMap<Session, UpdateSessionViewModel>().ReverseMap();
             CreateMap<Session, EditSessionViewModel>().ReverseMap();
+            CreateMap<Trainer, TrainerSelectViewModel>();
+            CreateMap<Category, CategorySelectViewModel>();
 
             // HealthRecord mappings
             CreateMap<HealthRecordViewModel, HealthRecord>().ReverseMap();
