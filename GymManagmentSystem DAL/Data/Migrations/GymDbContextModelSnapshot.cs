@@ -34,7 +34,7 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasColumnName("BookingDate")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<bool>("IsAttended")
                         .HasColumnType("bit");
@@ -58,7 +58,9 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -119,7 +121,9 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                         .HasColumnType("nvarchar(3)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<decimal>("Height")
                         .HasColumnType("decimal(18,2)");
@@ -157,7 +161,7 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasColumnName("JoinDate")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
@@ -214,7 +218,7 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasColumnName("StartDate")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -251,7 +255,7 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -299,7 +303,9 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -343,7 +349,7 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasColumnName("HireDate")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
