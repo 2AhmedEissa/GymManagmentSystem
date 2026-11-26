@@ -57,13 +57,13 @@ namespace GymManagmentSystem_DAL.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CategoryName")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -76,32 +76,32 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryName = "Cardio",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Cardio"
                         },
                         new
                         {
                             Id = 2,
-                            CategoryName = "Strength",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Strength"
                         },
                         new
                         {
                             Id = 3,
-                            CategoryName = "Yoga",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Yoga"
                         },
                         new
                         {
                             Id = 4,
-                            CategoryName = "Boxing",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Boxing"
                         },
                         new
                         {
                             Id = 5,
-                            CategoryName = "CrossFit",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "CrossFit"
                         });
                 });
 
@@ -366,7 +366,7 @@ namespace GymManagmentSystem_DAL.Data.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("varchar");
 
-                    b.Property<int>("Specialties")
+                    b.Property<int>("Specialization")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
