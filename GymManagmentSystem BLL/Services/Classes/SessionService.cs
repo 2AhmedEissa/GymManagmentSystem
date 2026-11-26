@@ -31,7 +31,7 @@ namespace GymManagmentSystem_BLL.Services.Classes
         {
             var session = await _unitOfWork.SessionRepository.GetSessionWithDetailsAsync(sessionId, ct);
 
-            if (session is null) return null!;
+            if (session is null) return null;
 
             return _mapper.Map<SessionViewModel>(session);
         }
