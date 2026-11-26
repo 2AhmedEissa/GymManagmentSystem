@@ -9,7 +9,7 @@ namespace GymManagmentSystem_BLL.ViewModels.Session
         public string Description { get; set; } = default!;
 
         [Required(ErrorMessage = "Capacity is required")]
-        [Range(0, 25, ErrorMessage = "Capacity must be between 0 and 25")]
+        [Range(1, 25, ErrorMessage = "Capacity must be between 1 and 25")]
         public int Capacity { get; set; }
 
         [Required(ErrorMessage = "Start date is required")]

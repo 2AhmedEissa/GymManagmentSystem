@@ -10,6 +10,7 @@
         public string TrainerName { get; set; } = default!;
         public string CategoryName { get; set; } = default!;
         public int AvailableSlots { get; set; }
+        public int BookedSlots => Capacity - AvailableSlots;
 
         // Computed properties
         public string DateDisplay => $"{StartDate:MMM dd , yyyy}";
