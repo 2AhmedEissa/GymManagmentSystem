@@ -1,4 +1,5 @@
-﻿using GymManagmentSystem_BLL.Services.Interfaces;
+﻿using AutoMapper;
+using GymManagmentSystem_BLL.Services.Interfaces;
 using GymManagmentSystem_BLL.ViewModels.Trainer;
 using GymManagmentSystem_DAL.Data.Models;
 using GymManagmentSystem_DAL.Repositories.Interfaces;
@@ -8,10 +9,12 @@ namespace GymManagmentSystem_BLL.Services.Classes
     public class TrainerService : ITrainerService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TrainerService(IUnitOfWork unitOfWork)
+        public TrainerService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<TrainerViewModel>> GetAllTrainersAsync(CancellationToken ct = default)
@@ -20,14 +23,7 @@ namespace GymManagmentSystem_BLL.Services.Classes
 
             if (!trainers.Any()) return [];
 
-            return trainers.Select(t => new TrainerViewModel
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Email = t.Email,
-                Phone = t.Phone,
-                Specialization = t.Specialization,
-            });
+            return _mapper.Map<IEnumerable<TrainerViewModel>>(trainers);
         }
 
         public async Task<TrainerViewModel?> GetTrainerDetailsAsync(int trainerId, CancellationToken ct = default)
@@ -36,44 +32,20 @@ namespace GymManagmentSystem_BLL.Services.Classes
 
             if (trainer is null) return null;
 
-            return new TrainerViewModel
-            {
-                Id = trainer.Id,
-                Name = trainer.Name,
-                Email = trainer.Email,
-                Specialization = trainer.Specialization,
-                Phone = trainer.Phone,
-                DateOfBirth = trainer.DateOfBirth,
-                Address = trainer.Address is not null
-                    ? $"{trainer.Address.BuildingNo} - {trainer.Address.Street} - {trainer.Address.City}"
-                    : "N/A"
-            };
+            return _mapper.Map<TrainerViewModel>(trainer);
         }
 
         public async Task<bool> CreateTrainerAsync(CreateTrainerViewModel model, CancellationToken ct = default)
         {
-            var trainer = new Trainer
-            {
-                Name = model.Name,
-                Email = model.Email,
-                Phone = model.Phone,
-                DateOfBirth = model.DateOfBirth,
-                Gender = model.Gender,
-                Specialization = model.Specialization,
-                Address = new Address
-                {
-                    BuildingNo = model.Address.BuildingNo,
-                    Street = model.Address.Street,
-                    City = model.Address.City
-                }
-            };
-
-            var emailExists = await _unitOfWork.GetRepository<Trainer>().AnyAsync(t => t.Email == model.Email, ct);
-            var phoneExists = await _unitOfWork.GetRepository<Trainer>().AnyAsync(t => t.Phone == model.Phone, ct);
+            var repo = _unitOfWork.GetRepository<Trainer>();
+            var emailExists = await repo.AnyAsync(t => t.Email == model.Email, ct);
+            var phoneExists = await repo.AnyAsync(t => t.Phone == model.Phone, ct);
 
             if (emailExists || phoneExists) return false;
 
-            _unitOfWork.GetRepository<Trainer>().AddAsync(trainer);
+            var trainer = _mapper.Map<Trainer>(model);
+
+            repo.AddAsync(trainer);
             var result = await _unitOfWork.SaveChangesAsync(ct);
             return result > 0;
         }
@@ -84,59 +56,45 @@ namespace GymManagmentSystem_BLL.Services.Classes
 
             if (trainer is null) return null;
 
-            return new EditTrainerViewModel
-            {
-                Id = trainer.Id,
-                Name = trainer.Name,
-                Email = trainer.Email,
-                Phone = trainer.Phone,
-                Specialization = trainer.Specialization,
-                BuildingNumber = trainer.Address?.BuildingNo ?? 0,
-                Street = trainer.Address?.Street ?? string.Empty,
-                City = trainer.Address?.City ?? string.Empty,
-            };
+            return _mapper.Map<EditTrainerViewModel>(trainer);
         }
 
         public async Task<bool> EditTrainerAsync(int trainerId, EditTrainerViewModel model, CancellationToken ct = default)
         {
-            var trainer = await _unitOfWork.GetRepository<Trainer>().GetByIdAsync(trainerId, ct);
+            var repo = _unitOfWork.GetRepository<Trainer>();
+            var trainer = await repo.GetByIdAsync(trainerId, ct);
 
             if (trainer is null) return false;
 
-            var emailExists = await _unitOfWork.GetRepository<Trainer>().AnyAsync(t => t.Email == model.Email && t.Id != trainerId, ct);
-            var phoneExists = await _unitOfWork.GetRepository<Trainer>().AnyAsync(t => t.Phone == model.Phone && t.Id != trainerId, ct);
+            var emailExists = await repo.AnyAsync(t => t.Email == model.Email && t.Id != trainerId, ct);
+            var phoneExists = await repo.AnyAsync(t => t.Phone == model.Phone && t.Id != trainerId, ct);
 
             if (emailExists || phoneExists)
             {
                 return false;
             }
 
-            trainer.Email = model.Email;
-            trainer.Phone = model.Phone;
-            trainer.Specialization = model.Specialization;
+            _mapper.Map(model, trainer);
             trainer.UpdatedAt = DateTime.Now;
 
-            trainer.Address ??= new Address();
-            trainer.Address.BuildingNo = model.BuildingNumber;
-            trainer.Address.City = model.City;
-            trainer.Address.Street = model.Street;
-
-            _unitOfWork.GetRepository<Trainer>().UpdateAsync(trainer);
+            repo.UpdateAsync(trainer);
             var result = await _unitOfWork.SaveChangesAsync(ct);
             return result > 0;
         }
 
         public async Task<bool> DeleteTrainerAsync(int trainerId, CancellationToken ct = default)
         {
-            var trainer = await _unitOfWork.GetRepository<Trainer>().GetByIdAsync(trainerId, ct);
+            var repo = _unitOfWork.GetRepository<Trainer>();
+            var trainer = await repo.GetByIdAsync(trainerId, ct);
 
             if (trainer is null) return false;
 
-            var hasUpcomingSessions = await _unitOfWork.GetRepository<Session>().AnyAsync(s => s.TrainerId == trainerId && s.StartDate > DateTime.Now, ct);
+            var hasUpcomingSessions = await _unitOfWork.GetRepository<Session>()
+                .AnyAsync(s => s.TrainerId == trainerId && s.StartDate > DateTime.Now, ct);
 
             if (hasUpcomingSessions) return false;
 
-            _unitOfWork.GetRepository<Trainer>().DeleteAsync(trainer);
+            repo.DeleteAsync(trainer);
             var result = await _unitOfWork.SaveChangesAsync(ct);
             return result > 0;
         }
